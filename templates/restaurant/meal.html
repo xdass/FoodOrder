@@ -1,4 +1,40 @@
 {% extends 'restaurant/base.html' %}
 
 {% block page %}
+    <div class="panel">
+        <div class="panel-heading bg-blue">
+            <h4 class="panel-title text-center text-white">Блюда</h4>
+        </div>
+        <div class="panel-body">
+            <div class="text-right">
+                <a href="{% url 'restaurant-add-meal' %}" class="btn btn-pink">Добавить блюдо</a>
+                <br>
+                <br>
+            </div>
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr class="bg-gray text-white">
+                        <th>Номер</th>
+                        <th>Название блюда</th>
+                        <th>Описание</th>
+                        <th>Цена</th>
+                        <th class="text-center">Изображение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for meal in meals %}
+                    <tr>
+                        <td scope="row">{{ meal.id }}</td>
+                        <td><a href="{% url 'restaurant-edit-meal' meal.id %}">{{ meal.name }}</a></td>
+                        <td>{{ meal.short_decription }}</td>
+                        <td>{{ meal.price }}</td>
+                        <td class="text-center"><img src="{{ MEDIA_URL }}{{ meal.image }}" alt="" width="50" height="50" class="img-rounded"></td>
+                    </tr>
+                {% endfor %}
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}
