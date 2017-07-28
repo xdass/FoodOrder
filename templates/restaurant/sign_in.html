@@ -1,23 +1,15 @@
-{% load staticfiles %}
+{% extends 'base_signup.html' %}
+{% load bootstrap3 %}
+{% block title %}Вход{% endblock %}
+{% block heading %}Вход в ресторан{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-</head>
-<body>
-
+{% block content %}
 <form method="POST">
     {% csrf_token %}
-    {{ form }}
-    <button type="submit" class="btn btn-default">Вход</button>
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-pink pull-right">Вход</button>
 </form>
-
-</body>
-</html>
+    <a href="{% url 'social:begin' 'vk-oauth2' %}" class="btn btn-primary">Войти с помощью VK</a>
+    <a href="{% url 'restaurant-sign-up' %}">Зарегистрировать ресторан</a>
+{% endblock %}
