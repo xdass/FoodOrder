@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
-    'bootstrap3'
+    'bootstrap3',
 ]
 
 
@@ -130,6 +130,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -152,8 +153,9 @@ try:
 except ImportError:
     pass
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['VK_APP_ID']
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ['VK_APP_SECRET']
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = 6112049
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'pT57xS7HyMXM7SlAbWAh'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
 
