@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5+&$4y0_91y(i5&-)zdvfu6jjm1eja5i2m8yavnt0jgr8a1*n$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
@@ -66,7 +66,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -153,7 +152,7 @@ try:
 except ImportError:
     pass
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['Vk_APP_ID']
+SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['VK_APP_ID']
 SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ['VK_APP_SECRET']
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
