@@ -153,8 +153,8 @@ try:
 except ImportError:
     pass
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = 'your app id'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = 'add_your_app_secret_key'
+SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ['Vk_APP_ID']
+SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ['VK_APP_SECRET']
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
 
