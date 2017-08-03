@@ -2,6 +2,27 @@
 
 {% block title %}Ресторан{% endblock %}
 
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            let now = new Date();
+            setInterval(function () {
+                $.ajax({
+                    url: '/api/restaurant/order/notification/' + now.toISOString() + '/',
+                    method: 'GET',
+                    success: function (data) {
+                        if (data['notification'] === 0) {
+                            $('.badge').text('')
+                        } else {
+                            $('.badge').text(data['notification'])
+                        }
+                    }
+                })
+            }, 3000)
+        })
+    </script>
+{% endblock %}
+
 {% block sidebar %}
     {% url 'restaurant-order' as restaurant_order_url %}
     {% url 'restaurant-meal' as restaurant_meal_url %}
@@ -19,7 +40,10 @@
     <div class="list-group">
         <span class="text-uppercase">Панель управления</span>
         <a href="{% url 'restaurant-meal' %}" class="list-group-item {% if request.path == restaurant_meal_url %}active{% endif %}">Блюда</a>
-        <a href="{% url 'restaurant-order' %}" class="list-group-item {% if request.path == restaurant_order_url %}active{% endif %}">Заказы</a>
+        <a href="{% url 'restaurant-order' %}" class="list-group-item {% if request.path == restaurant_order_url %}active{% endif %}">
+            Заказы
+            <span class="badge"></span>
+        </a>
         <a href="{% url 'restaurant-report' %}" class="list-group-item {% if request.path == restaurant_report_url %}active{% endif %}">Отчеты</a>
 
         <span class="text-uppercase">Профиль</span>

@@ -7,7 +7,6 @@ from social_core.pipeline.partial import partial
 def create_user_by_type(strategy, backend, user, request, response, *args, **kwargs):
     if backend.name == 'vk-oauth2':
         avatar = response['user_photo']
-        strategy.session_set('user_id', response.get('id'))
 
     if request.get('user_type', '') == 'driver' and not Driver.objects.filter(user_id=user.id):
         Driver.objects.create(user_id=user.id, avatar=avatar)

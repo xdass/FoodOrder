@@ -26,7 +26,7 @@
                     <tr>
                         <td scope="row">{{ meal.id }}</td>
                         <td><a href="{% url 'restaurant-edit-meal' meal.id %}">{{ meal.name }}</a></td>
-                        <td>{{ meal.short_decription }}</td>
+                        <td>{{ meal.short_description }}</td>
                         <td>{{ meal.price }}</td>
                         <td class="text-center"><img src="{{ MEDIA_URL }}{{ meal.image }}" alt="" width="50" height="50" class="img-rounded"></td>
                     </tr>
