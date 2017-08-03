@@ -29,11 +29,19 @@ urlpatterns = [
     # Sign up /Sign in  for API
     url(r'^api/social/', include('rest_framework_social_oauth2.urls')),
 
-    # Api endpoints
+    # Api CUSTOMER endpoints
     url(r'^api/customer/restaurants/$', apis.customer_get_restaurants),
     url(r'^api/customer/meals/(?P<restaurant_id>\d+)/$', apis.customer_get_meals),
     url(r'^api/customer/order/add/$', apis.customer_add_order),
     url(r'^api/customer/order/latest/$', apis.customer_get_latest_order),
     url(r'api/restaurant/order/notification/(?P<last_request_time>.+)/$', apis.restaurant_order_notification),
+
+
+    # Api DRIVERS endpoints
+    url(r'^api/driver/orders/ready/$', apis.driver_get_ready_orders),
+    url(r'^api/driver/order/pick/$', apis.driver_pick_order),
+    url(r'^api/driver/order/latest/$', apis.driver_get_latest_order),
+    url(r'^api/driver/order/complete/$', apis.driver_complete_order),
+    url(r'^api/driver/order/revenue/$', apis.driver_get_revenue),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
