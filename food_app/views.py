@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from food_app.forms import UserForm, RestaurantForm, UserFormForEdit, MealForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import Restaurant, Meal, Order
+from django.db.models import Sum, Count, Case, When
+
+from .models import Restaurant, Meal, Order, Driver
 
 
 # Create your views here.
@@ -129,6 +131,61 @@ def restaurant_order(request):
     return render(request, 'restaurant/order.html', {'orders': orders})
 
 
+@login_required(login_url='/restaurant/sign-in')
+def customers_ever_ordered(request):
+    pass
+
+
 @login_required(login_url='/restaurant/sign-in/')
 def restaurant_report(request):
-    return render(request, 'restaurant/report.html')
+    # Calculate revenue and number of orders by current week
+    from datetime import datetime, timedelta
+
+    revenue = []
+    orders = []
+
+    # Calculate weekdays
+    today = datetime.now()
+    current_weekdays = [today + timedelta(days=i) for i in range(0 - today.weekday(), 7 - today.weekday())]
+
+    for day in current_weekdays:
+        delivered_orders = Order.objects.filter(
+            restaurant=request.user.restaurant,
+            status=Order.DELIVERED,
+            created_at__year=day.year,
+            created_at__month=day.month,
+            created_at__day=day.day
+        )
+        revenue.append(sum(order.total for order in delivered_orders))
+        orders.append(delivered_orders.count())
+
+    # Top 3 meals
+    top3_meals = Meal.objects.filter(restaurant=request.user.restaurant)\
+        .annotate(total_order=Sum('orderdetails__quantity'))\
+        .order_by('-total_order')[:2]
+
+    meal = {
+        "labels": [meal.name for meal in top3_meals],
+        "data": [meal.total_order or 0 for meal in top3_meals]
+    }
+
+    # Top 3 drivers
+    top3_driver = Driver.objects.annotate(
+        total_order=Count(
+            Case(
+                When(order__restaurant=request.user.restaurant, then=1)
+            )
+        )
+    ).order_by('-total_order')[:2]
+
+    driver = {
+        "labels": [driver.user.get_full_name() for driver in top3_driver],
+        "data": [driver.total_order for driver in top3_driver]
+    }
+
+    return render(request, 'restaurant/report.html', {
+        'revenue': revenue,
+        'orders': orders,
+        'meal': meal,
+        'driver': driver
+    })
