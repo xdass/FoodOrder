@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'restaurant/meal/add/$', views.restaurant_add_meal, name='restaurant-add-meal'),
     url(r'restaurant/meal/edit/(?P<meal_id>\d+)/$', views.restaurant_edit_meal, name='restaurant-edit-meal'),
     url(r'restaurant/customers/$', views.customers_ever_ordered, name='restaurant-customers'),
+    url(r'restaurant/drivers/$', views.drivers_ever_delivered, name='restaurant-drivers'),
     url(r'restaurant/order/$', views.restaurant_order, name='restaurant-order'),
     url(r'restaurant/report/$', views.restaurant_report, name='restaurant-report'),
 

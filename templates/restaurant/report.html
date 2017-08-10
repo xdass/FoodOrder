@@ -136,4 +136,39 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-8">
+            <!-- Top 3 customers -->
+            <div class="panel">
+                <div class="panel-heading bg-blue">
+                    <h4 class="panel-title text-center text-white">
+                        3 Самых активных клиента
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <canvas id="customerChart" height="242">
+                        <script>
+                            var ctx = document.getElementById("customerChart").getContext("2d")
+                            var data = {
+                                labels: {{ customer.labels|safe }},
+                                datasets: [
+                                    {
+                                        label: '3 Самых активных клиента',
+                                        backgroundColor: [
+                                          '#36A2EB', '#FFCE56', '#FF6384'
+                                        ],
+                                        data: {{ customer.data }}
+                                    }
+                                ]
+                            };
+                            new Chart(ctx, {
+                                type: 'pie',
+                                data: data
+                            })
+                        </script>
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

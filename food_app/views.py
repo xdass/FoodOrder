@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count, Case, When
 
-from .models import Restaurant, Meal, Order, Driver
+from .models import Restaurant, Meal, Order, Driver, Customer
 
 
 # Create your views here.
@@ -133,7 +133,18 @@ def restaurant_order(request):
 
 @login_required(login_url='/restaurant/sign-in')
 def customers_ever_ordered(request):
-    pass
+    customers = Customer.objects.filter(
+        order__restaurant=request.user.restaurant,
+    ).annotate(orders_count=Count('order'))
+    return render(request, 'restaurant/customers.html', {'customers': customers})
+
+
+@login_required(login_url='/restaurant/sign-in')
+def drivers_ever_delivered(request):
+    drivers = Driver.objects.filter(
+        order__restaurant=request.user.restaurant,
+    ).annotate(orders_count=Count('order'))
+    return render(request, 'restaurant/drivers.html', {'drivers': drivers})
 
 
 @login_required(login_url='/restaurant/sign-in/')
@@ -176,16 +187,31 @@ def restaurant_report(request):
                 When(order__restaurant=request.user.restaurant, then=1)
             )
         )
-    ).order_by('-total_order')[:2]
+    ).order_by('-total_order')[:3]
 
     driver = {
         "labels": [driver.user.get_full_name() for driver in top3_driver],
         "data": [driver.total_order for driver in top3_driver]
     }
 
+    # Top 3 customers
+    top3_customers = Driver.objects.annotate(
+        total_order=Count(
+            Case(
+                When(order__restaurant=request.user.restaurant, then=1)
+            )
+        )
+    ).order_by('-total_order')[:3]
+
+    customer = {
+        "labels": [driver.user.get_full_name() for driver in top3_customers],
+        "data": [driver.total_order for driver in top3_customers]
+    }
+
     return render(request, 'restaurant/report.html', {
         'revenue': revenue,
         'orders': orders,
         'meal': meal,
-        'driver': driver
+        'driver': driver,
+        'customer': customer
     })
