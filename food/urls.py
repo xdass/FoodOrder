@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'restaurant/report/$', views.restaurant_report, name='restaurant-report'),
 
     # Sign up /Sign in  for API
-    url(r'^api/social/', include('rest_framework_social_oauth2.urls')),
+    url(r'^api/social/', include('rest_framework_social_oauth2.urls'), name='social'),
 
     # Api CUSTOMER endpoints
     url(r'^api/customer/restaurants/$', apis.customer_get_restaurants),

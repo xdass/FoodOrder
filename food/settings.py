@@ -127,10 +127,8 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#  STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -157,7 +155,7 @@ except ImportError:
 SOCIAL_AUTH_VK_OAUTH2_KEY = 6112049
 SOCIAL_AUTH_VK_OAUTH2_SECRET = 'pT57xS7HyMXM7SlAbWAh'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'restaurant/account/'
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
