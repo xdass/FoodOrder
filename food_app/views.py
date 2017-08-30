@@ -34,16 +34,18 @@ def restaurant_sign_up(request):
 
         if user_form.is_valid() and restaurant_form.is_valid():
             new_user = User.objects.create_user(**user_form.cleaned_data)
+            new_user.is_active = False
+            new_user.save()
             new_restaurant = restaurant_form.save(commit=False)
             new_restaurant.user = new_user
             new_restaurant.save()
 
-            login(request, authenticate(
-                username=user_form.cleaned_data['username'],
-                password=user_form.cleaned_data['password']
-            ))
+            # login(request, authenticate(
+            #     username=user_form.cleaned_data['username'],
+            #     password=user_form.cleaned_data['password']
+            # ))
 
-            return redirect(restaurant_home)
+            #return redirect(restaurant_home)
 
     return render(request, 'restaurant/sign-up.html', {
         'user_form': user_form,

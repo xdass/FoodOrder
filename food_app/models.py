@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.utils.html import format_html
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -10,6 +11,22 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=500, verbose_name='Телефон')
     address = models.CharField(max_length=500, verbose_name='Адрес')
     logo = models.ImageField(upload_to='restaurant_logo/', blank=False, verbose_name='Логотип')
+
+    def user_is_active(self):
+        return self.user.is_active
+    user_is_active.admin_order_field = 'user_is_active'
+    user_is_active.boolean = True
+    user_is_active.short_description = 'Ресторан подтвержден'
+
+    def approve_restaurant(self):
+        if self.user.is_active:
+            info = '<span style="color: grey">Активирован</span>'
+        else:
+            info = '<a href="#" class="btn btn-primary">Активировать</a>'
+        return format_html(
+            info
+        )
+    approve_restaurant.short_description = 'Активация ресторана'
 
     def __str__(self):
         return self.name
